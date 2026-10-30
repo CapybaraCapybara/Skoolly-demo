@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/supabase/schools", "destination": "/demo-api/schools.json" },
+    { "source": "/api/public/fees", "destination": "/demo-api/fees.json" },
+    { "source": "/api/public/forum/posts", "destination": "/demo-api/forum.json" },
+    { "source": "/api/public/schools/:code/sources", "destination": "/demo-api/sources/:code.json" }
+  ]
+}

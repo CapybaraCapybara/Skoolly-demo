@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500;600;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* DM Sans has no Thai glyphs; IBM Plex Sans Thai Looped (looped, more formal) fills them in so Thai text matches across user & admin pages */
+  --font-sans: 'DM Sans', 'IBM Plex Sans Thai Looped', system-ui, sans-serif;
+
+  /* "navy" and "teal" keep their names for existing class usage but now carry the navy / steel-blue family */
+  --color-navy-950: #0c1a33;
+  --color-navy-900: #14284b;
+  --color-teal-50: #eef3fa;
+  --color-teal-100: #dae4f3;
+  --color-teal-200: #b8cbe6;
+  --color-teal-300: #8eaad4;
+  --color-teal-400: #6488bf;
+  --color-teal-500: #456ca6;
+  --color-teal-600: #36578b;
+  --color-teal-700: #2c4772;
+  --color-teal-800: #233a5e;
+  --color-teal-900: #1c2f4d;
+  --color-amber-400: #f59e0b;
+  --color-amber-300: #fbbf24;
+  --color-slate-50: #fdfbf7;
+
+  /* Brand theme: navy + gold on ivory.
+     Token names are historical: "charcoal" is the primary navy, "bronze" is the gold accent. */
+  --color-warm-bg: #f8f6f1;
+  --color-warm-card: #efe9dc;
+  --color-warm-accent: #e3dccd;
+  --color-warm-charcoal: #14284b;
+  --color-warm-bronze: #b8913a;
+  --color-warm-cream: #fcfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-family: 'DM Sans', 'IBM Plex Sans Thai Looped', system-ui, sans-serif;
+  background-color: #f8f6f1;
+  color: #14284b;
+}
+
+input[type="range"] {
+  accent-color: #456ca6;
+}
+
+.compare-bar {
+  z-index: 1100 !important;
+}
+
+.compare-bar,
+/* used by the admin toast — Tailwind has no built-in `animate-slideUp` */
+.animate-slideUp {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* used by the admin scroll panes — not a Tailwind v4 core utility */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, currentColor 25%, transparent);
+  border-radius: 999px;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(20, 40, 75, 0.14);
+}
+
+.modal-overlay {
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  animation: scaleIn 0.2s ease;
+}
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@theme inline {
+  --font-heading: 'DM Sans', 'IBM Plex Sans Thai Looped', system-ui, sans-serif;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Leaflet: muted basemap so the school pins stand out, and popups in the site's font */
+.leaflet-container {
+  font-family: inherit;
+  background: #f1efe9;
+}
+.leaflet-container .leaflet-tile-pane {
+  filter: grayscale(1) sepia(0.12) contrast(0.88) brightness(1.06);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(20, 40, 75, 0.16);
+}
+.leaflet-popup-content {
+  margin: 12px 16px;
+  line-height: 1.45;
+}
+.leaflet-tooltip {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #14284b;
+  border-radius: 8px;
+  border-color: #e3dccd;
+}
+.leaflet-marker-draggable {
+  cursor: grab;
+}
+.leaflet-container .leaflet-control-attribution {
+  font-size: 10px;
+}
+.sk-popup-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #14284b;
+}
+.sk-popup-meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #6b7280;
+}
+.sk-popup-fee {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b8913a;
+}
+.sk-popup-note {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #b45309;
+}
+.sk-popup-link {
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: #14284b;
+  cursor: pointer;
+}
+.sk-popup-link:hover {
+  color: #b8913a;
+  text-decoration: underline;
+}
